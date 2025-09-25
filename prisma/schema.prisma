@@ -16,13 +16,14 @@ datasource db {
 
 model Account {
   id         String      @id @default(cuid())
-  email      String      @unique @db.VarChar(150)
+  username   String      @unique @db.VarChar(150)
   password   String      @db.Text
   role       AccountRole
   created_at DateTime    @default(now())
   updated_at DateTime    @updatedAt
   deleted_at DateTime?
   User       User?
+  AuthLog    AuthLog[]
 
   @@map("accounts")
 }
@@ -33,13 +34,33 @@ enum AccountRole {
 }
 
 model User {
-  id           String  @id @default(cuid())
-  account_id   String  @unique
-  account      Account @relation(fields: [account_id], references: [id])
-  name         String  @db.VarChar(150)
-  address      String? @db.VarChar(250)
-  phone_number String? @db.Char(20)
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
+  id           String    @id @default(cuid())
+  account_id   String    @unique
+  account      Account   @relation(fields: [account_id], references: [id])
+  name         String    @db.VarChar(150)
+  email        String    @unique @db.VarChar(150)
+  address      String?   @db.VarChar(250)
+  phone_number String?   @db.Char(20)
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+  deleted_at   DateTime?
+
+  @@map("users")
+}
+
+model AuthLog {
+  id         String       @id @default(cuid())
+  account_id String
+  account    Account      @relation(fields: [account_id], references: [id])
+  activity   AuthActivity
+  created_at DateTime     @default(now())
+  updated_at DateTime     @updatedAt
   deleted_at DateTime?
+
+  @@map("auth_log")
+}
+
+enum AuthActivity {
+  login
+  logout
 }

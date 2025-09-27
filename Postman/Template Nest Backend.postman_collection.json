@@ -1,0 +1,246 @@
+{
+	"info": {
+		"_postman_id": "f87e4e15-de83-4750-b194-fc7e8982090b",
+		"name": "Template Nest Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32342094",
+		"_collection_link": "https://dark-water-435962.postman.co/workspace/My-Workspace~7ea1cb0b-b544-4ac8-8bdf-f7cfced73af0/collection/32342094-f87e4e15-de83-4750-b194-fc7e8982090b?action=share&source=collection_link&creator=32342094"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "1331331",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "Password123_",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "email",
+							"value": "email@emial.com",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "name",
+							"value": "a",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "phone_number",
+							"value": "+62812345678",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "1331331",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Password123_",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Me",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "1331331",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Password123_",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/me",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "1331331",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Password123_",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/users?name=a&page=3&limit=1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "a"
+						},
+						{
+							"key": "page",
+							"value": "3"
+						},
+						{
+							"key": "limit",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/logout",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWZ6bmZtcWYwMDAwZmc3NGFra3luczg2IiwidXNlcm5hbWUiOiIxMzMxMzMxIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzU4OTg4MjA0LCJleHAiOjE3NTg5ODkxMDR9.5uDU2ZDl8vRfDfvp5BlYquQJa2-DSNhNugV7po3hUKk",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"value": ""
+		}
+	]
+}

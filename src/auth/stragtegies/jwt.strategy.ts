@@ -3,11 +3,13 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { JwtPayload } from '../types/jwt-payload.type';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    private config : ConfigService
+    private config : ConfigService,
+    private DB : DatabaseService
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -17,6 +19,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
-    return { accountId: payload.sub, role: payload.role };
+
+    const data = await this.DB.user.findFirst({
+      where : {
+        account_id : payload.sub
+      }
+    });
+
+    return { accountId: payload.sub, role: payload.role, data };
   }
 }

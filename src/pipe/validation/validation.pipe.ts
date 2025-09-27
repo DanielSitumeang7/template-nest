@@ -10,7 +10,9 @@ export class ValidationPipe implements PipeTransform<any> {
       return value;
     }
 
-    const object = plainToInstance(metatype, value);
+    const object = plainToInstance(metatype, value, {
+      enableImplicitConversion: true
+    });
     const errors = await validate(object);
 
     if (errors.length > 0) {
@@ -26,19 +28,12 @@ export class ValidationPipe implements PipeTransform<any> {
   }
 
   private formatErrors(errors: any[]) {
-    const result: Record<string, string[]> = {};
-
-    errors.forEach((err) => {
-      if (err.constraints) {
-        result[err.property] = Object.values(err.constraints);
-      }
-
-      // kalau nested DTO
-      if (err.children && err.children.length > 0) {
-        Object.assign(result, this.formatErrors(err.children));
-      }
+    return errors.map(err => {
+      return {
+        field: err.property,
+        errors: Object.values(err.constraints ?? {}),
+      };
     });
 
-    return result;
   }
 }

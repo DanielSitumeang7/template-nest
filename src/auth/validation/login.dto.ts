@@ -10,6 +10,16 @@ export class LoginDTO {
     password: string;
 }
 
+export class RefreshTokenDTO {
+    @IsNotEmpty()
+    @IsString()
+    accountId: string; 
+
+    @IsNotEmpty()
+    @IsString()
+    refresh_token: string
+}
+
 export class RegisterDTO {
     @IsNotEmpty({message : "username harus diisi"})
     @IsString({message : "username harus bertipe string"})
@@ -30,11 +40,11 @@ export class RegisterDTO {
     email: string;
 
     @IsOptional()
-    @IsString()
+    @IsString({message : "alamat harus bertipe string"})
     address?: string;
 
     @IsOptional()
-    @IsString()
-    @IsPhoneNumber()
+    @IsString({message : "nomor telefon harus bertipe string"})
+    @IsPhoneNumber("ID",{message : "nomor telefon harus sesuai format dimulai dari +62"})
     phone_number?: string;
 }

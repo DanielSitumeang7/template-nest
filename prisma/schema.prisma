@@ -19,6 +19,7 @@ model Account {
   username   String      @unique @db.VarChar(150)
   password   String      @db.Text
   role       AccountRole
+  refresh_token_hash String?     @db.Text
   created_at DateTime    @default(now())
   updated_at DateTime    @updatedAt
   deleted_at DateTime?

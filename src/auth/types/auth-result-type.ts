@@ -18,3 +18,7 @@ export interface RegisterParameter {
 export interface RegisterDTO extends ResponseDTO {
   data? : User
 }
+
+export interface LoginDTO extends ResponseDTO {
+  data : AuthTokens
+}

@@ -64,8 +64,8 @@ export class UsersService {
             message: "Data ditemukan",
             data: {
                 data,
-                current_page: page ?? undefined,
-                limit,
+                current_page: Number(page) ?? undefined,
+                limit : Number(limit),
                 total_page
             }
         }

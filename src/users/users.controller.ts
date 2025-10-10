@@ -20,8 +20,8 @@ export class UsersController {
     @Roles("admin")
     async getUsers(
         @Query() queries: UserSearch,
-        @Res() res : Response 
-    ) : Promise<Response> {
+        @Res() res: Response
+    ): Promise<Response> {
 
         const response = await this.userService.getUsers(queries);
 

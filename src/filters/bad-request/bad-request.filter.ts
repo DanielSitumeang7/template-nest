@@ -1,8 +1,14 @@
 import { ArgumentsHost, BadRequestException, Catch, ExceptionFilter } from '@nestjs/common';
 import { Response } from 'express';
+import { LoggerService } from 'src/logger/logger.service';
 
 @Catch(BadRequestException)
 export class BadRequestFilter<T> implements ExceptionFilter<BadRequestException> {
+
+  constructor(
+    private readonly logger : LoggerService
+  ) {}
+
   catch(exception: BadRequestException, host: ArgumentsHost) {
 
     const http = host.switchToHttp();
@@ -24,6 +30,8 @@ export class BadRequestFilter<T> implements ExceptionFilter<BadRequestException>
       // kalau benar-benar string
       errors = [exceptionResponse];
     }
+
+    this.logger.warn(JSON.stringify(errors), BadRequestFilter.name);
 
     return response.status(400).send({
       status: "error",

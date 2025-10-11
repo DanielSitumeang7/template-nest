@@ -1,8 +1,14 @@
 import { ArgumentsHost, Catch, ExceptionFilter, UnauthorizedException } from '@nestjs/common';
 import { Response } from 'express';
+import { LoggerService } from 'src/logger/logger.service';
 
 @Catch(UnauthorizedException)
 export class UnauthorizedFilter<T> implements ExceptionFilter<UnauthorizedException> {
+
+  constructor(
+    private readonly logger : LoggerService
+  ){}
+
   catch(exception: UnauthorizedException, host: ArgumentsHost) {
     const http = host.switchToHttp();
     const response = http.getResponse<Response>();
@@ -23,6 +29,8 @@ export class UnauthorizedFilter<T> implements ExceptionFilter<UnauthorizedExcept
       // kalau benar-benar string
       errors = [exceptionResponse];
     }
+
+    this.logger.warn(JSON.stringify(errors), UnauthorizedFilter.name);
 
     return response.status(401).send({
       status: "error",

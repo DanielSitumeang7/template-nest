@@ -1,8 +1,9 @@
-import { Controller, Post, Res, UploadedFile, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, Res, UploadedFile, UploadedFiles, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { Response } from 'express';
 import { Roles } from 'src/auth/decorators/roles/roles.decorator';
 import { JwtGuard } from 'src/auth/guards/jwt/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
+import { UnsupportedMediaTypeExceptionFilter } from 'src/filters/unsupported-media-type-exception/unsupported-media-type-exception.filter';
 import { MultipleFilesInterceptor } from 'src/interceptors/upload/multiple/multiple.interceptor';
 import { SingleFileInterceptor } from 'src/interceptors/upload/single/single.interceptor';
 
@@ -36,8 +37,9 @@ export class FilesController {
     @Post("upload-multiple")
     @UseGuards(JwtGuard, RolesGuard)
     @Roles("admin")
+    @UseFilters(UnsupportedMediaTypeExceptionFilter)
     @UseInterceptors(MultipleFilesInterceptor([
-        { name: 'foto', maxCount: 2 },
+        { name: 'foto', maxCount: 2, ext: ["jpg","png"] },
         { name: 'dokumen', maxCount: 3 },
         { name: 'video', maxCount: 1 }
     ]))
@@ -58,14 +60,14 @@ export class FilesController {
             return res.status(400).send({
                 status: "error",
                 message: "No file uploaded",
-                data: null
+                code : 400
             });
         }
 
-        return res.status(200).send({
+        return res.status(201).send({
             status: "success",
             message: "File uploaded successfully",
-            data: file
+            code : 201
         });
     }
 

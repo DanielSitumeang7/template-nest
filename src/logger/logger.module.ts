@@ -1,21 +1,8 @@
 import { Global, Module } from '@nestjs/common';
-import { LoggerService } from './logger.service';
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
-import * as fs from 'fs';
-import * as path from 'path';
-
-function getLogPath(filename: string) {
-  const now = new Date();
-  const year = now.getFullYear().toString();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const date = String(now.getDate()).padStart(2, '0');
-
-  const dir = path.join('logs', year, month, date);
-  fs.mkdirSync(dir, { recursive: true });
-
-  return path.join(dir, filename);
-}
+import { createDailyFolderTransport } from './daily-folder-transport';
+import { LoggerService } from './logger.service';
 
 @Global()
 @Module({
@@ -26,38 +13,35 @@ function getLogPath(filename: string) {
           format: winston.format.combine(
             winston.format.timestamp(),
             winston.format.colorize(),
-            winston.format.printf(({ level, message, timestamp, context }) => {
-              return `[${timestamp}] [${level}]${context ? ' [' + context + ']' : ''}: ${message}`;
-            })
+            winston.format.printf(
+              ({ level, message, timestamp, context }) =>
+                `[${timestamp}] [${level}]${context ? ' [' + context + ']' : ''}: ${message}`,
+            ),
           ),
         }),
 
-        new winston.transports.File({
-          filename: getLogPath('error.log'),
+        createDailyFolderTransport({
           level: 'error',
-          format: winston.format.json(),
+          filename: 'error.log',
         }),
 
-        new winston.transports.File({
-          filename: getLogPath('combined.log'),
-          format: winston.format.json(),
-        }),
-
-        new winston.transports.File({
-          filename: getLogPath('debug.log'),
-          level: 'debug',
-          format: winston.format.json(),
-        }),
-
-        new winston.transports.File({
-          filename: getLogPath('warn.log'),
+        createDailyFolderTransport({
           level: 'warn',
-          format: winston.format.json(),
+          filename: 'warn.log',
+        }),
+
+        createDailyFolderTransport({
+          level: 'debug',
+          filename: 'debug.log',
+        }),
+
+        createDailyFolderTransport({
+          filename: 'combined.log',
         }),
       ],
     }),
   ],
-  providers: [LoggerService],
-  exports: [LoggerService, WinstonModule],
+  providers : [LoggerService],
+  exports: [WinstonModule, LoggerService],
 })
 export class LoggerModule {}
